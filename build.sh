@@ -32,7 +32,7 @@ GCCbPath="${MainGCCbPath}"
 # Identity
 VERSION=9x13
 KERNELNAME=TheOneMemory
-CODENAME=Hayzel
+CODENAME=Onyx
 VARIANT=HMP
 
 # Show manufacturer info
@@ -46,14 +46,15 @@ ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
+msg "|| Cloning sdclang toolchain ||"
 git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 $ClangPath
-#git clone --depth=1 https://gitlab.com/ImSurajxD/clang-r450784d -b master $ClangPath
-#wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/master/clang-r458507.tar.gz -O "clang-r458507.tar.gz"
-#tar -xf clang-r458507.tar.gz -C $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
+rm -rf $GCCaPath/*
 mkdir $GCCbPath
+rm -rf $GCCbPath/*
+msg "|| Cloning GCC toolchain ||"
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
 tar -xf gcc64.tar.gz -C $GCCaPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
@@ -86,6 +87,7 @@ tg_post_msg() {
 # Compiler
 compile(){
 cd ${KERNEL_ROOTDIR}
+msg "|| Cooking kernel. . . ||"
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 X00TD_defconfig
@@ -102,6 +104,8 @@ make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
 	finerr
 	exit 1
    fi
+
+   msg "|| Cloning AnyKernel ||"
    git clone --depth=1 https://github.com/strongreasons/AnyKernel3 -b hmp-12 AnyKernel
 	cp $IMAGE AnyKernel
 }
@@ -144,7 +148,7 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [$VERSION]$KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "*.zip"
+    zip -r9 [$VERSION]$KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "zipsigner*" "*.zip"
 
     ZIP_FINAL="[$VERSION]$KERNELNAME-$CODENAME-$VARIANT-$DATE"
 
