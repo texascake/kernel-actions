@@ -5,6 +5,8 @@
 
 #
 # Function to show an informational message
+#
+
 msg() {
 	echo
     echo -e "\e[1;32m$*\e[0m"
@@ -32,7 +34,7 @@ GCCbPath="${MainGCCbPath}"
 # Identity
 VERSION=9x13
 KERNELNAME=TheOneMemory
-CODENAME=Onyx
+CODENAME=Hayzel
 VARIANT=HMP
 
 # Show manufacturer info
@@ -51,9 +53,9 @@ git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
-rm -rf $GCCaPath/*
+
 mkdir $GCCbPath
-rm -rf $GCCbPath/*
+
 msg "|| Cloning GCC toolchain ||"
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
 tar -xf gcc64.tar.gz -C $GCCaPath
