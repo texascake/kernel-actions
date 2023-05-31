@@ -1,3 +1,8 @@
+#
+#
+# Copyright (C) 2023 RyuujiX <saputradenny712@gmail.com>
+#
+
 name: Kernel build
 
 env:
