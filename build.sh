@@ -35,13 +35,13 @@ GCCbPath="${MainGCCbPath}"
 VERSION=9x13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMP
+VARIANT=HMPxCAF
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/android_kernel_asus_sdm660-4.4 -b lineage-18.1 kernel
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/platform_kernel_asus_sdm660 -b caf-eas kernel
 
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
