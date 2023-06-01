@@ -34,7 +34,7 @@ GCCbPath="${MainGCCbPath}"
 # Identity
 VERSION=9x13
 KERNELNAME=TheOneMemory
-CODENAME=Hayzel
+CODENAME=Onyx
 VARIANT=HMPxCLO
 
 # Show manufacturer info
