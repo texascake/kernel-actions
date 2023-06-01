@@ -41,7 +41,7 @@ VARIANT=HMPxCLO
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/platform_kernel_asus_sdm660 -b clo-hmp kernel
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/platform_kernel_asus_sdm660 -b clo-hmp-oc kernel
 
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
@@ -62,8 +62,6 @@ tar -xf gcc64.tar.gz -C $GCCaPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
 tar -xf gcc32.tar.gz -C $GCCbPath
 
-# Check Kernel Version
-LINUXVER=$(make kernelversion)
 
 # Prepared
 KERNEL_ROOTDIR=$(pwd)/kernel # IMPORTANT ! Fill with your kernel source root directory.
@@ -128,7 +126,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>$LINUXVER</code>
+        -<code>4.4.205</code>
 
          <b>💿 Compiler: </b>
         -<code>$KBUILD_COMPILER_STRING</code>
