@@ -35,13 +35,13 @@ GCCbPath="${MainGCCbPath}"
 VERSION=9x13
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=HMPxCAF
+VARIANT=HMPxCLO
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/platform_kernel_asus_sdm660 -b caf-eas kernel
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/platform_kernel_asus_sdm660 -b clo-hmp kernel
 
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
@@ -62,6 +62,9 @@ tar -xf gcc64.tar.gz -C $GCCaPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
 tar -xf gcc32.tar.gz -C $GCCbPath
 
+# Check Kernel Version
+LINUXVER=$(make kernelversion)
+
 # Prepared
 KERNEL_ROOTDIR=$(pwd)/kernel # IMPORTANT ! Fill with your kernel source root directory.
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
@@ -70,7 +73,7 @@ CLANG_VER="Snapdragon clang version 14.1.5"
 #LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER X GCC 4.9"
 ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$ClangPath/lib LD=ld.lld HOSTLD=ld.lld"
-DATE=$(date +"%F-%S")
+DATE=$(date +"%Y-%m-%d")
 START=$(date +"%s")
 
 # Java
@@ -125,7 +128,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.302</code>
+        -<code>$LINUXVER</code>
 
          <b>💿 Compiler: </b>
         -<code>$KBUILD_COMPILER_STRING</code>
@@ -150,9 +153,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel || exit 1
-    zip -r9 [$VERSION]$KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "zipsigner*" "*.zip"
+    zip -r9 $KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "zipsigner*" "*.zip"
 
-    ZIP_FINAL="[$VERSION]$KERNELNAME-$CODENAME-$VARIANT-$DATE"
+    ZIP_FINAL="$KERNELNAME-$CODENAME-$VARIANT-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
