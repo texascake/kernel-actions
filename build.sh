@@ -137,7 +137,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #TheOneMemory #Hayzel #HMP"
+        #TheOneMemory #$CODENAME #$VARIANT"
 }
 # Find Error
 function finerr() {
