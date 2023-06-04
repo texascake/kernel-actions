@@ -126,7 +126,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.205</code>
+        -<code>4.4.302</code>
 
          <b>💿 Compiler: </b>
         -<code>$KBUILD_COMPILER_STRING</code>
