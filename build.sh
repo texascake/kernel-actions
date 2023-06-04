@@ -32,16 +32,16 @@ GCCaPath="${MainGCCaPath}"
 GCCbPath="${MainGCCbPath}"
 
 # Identity
-VERSION=9x13
+VERSION=REBASE
 KERNELNAME=TheOneMemory
-CODENAME=Onyx
-VARIANT=EASxCLO
+CODENAME=Hayzel
+VARIANT=EAS
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Kneba/platform_kernel_asus_sdm660 -b clo-eas-oc kernel
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Tiktodz/kernel_asus_sdm660 -b main kernel
 
 # Clone AOSP Clang
 ClangPath=${MainClangPath}
