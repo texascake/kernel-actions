@@ -43,7 +43,7 @@ MANUFACTURERINFO="ASUSTek Computer Inc."
 # Clone Kernel Source
 git clone --depth=1 https://$USERNAME:$TOKEN@github.com/Tiktodz/kernel_asus_sdm660 -b main kernel
 
-# Clone AOSP Clang
+# Clone Snapdragon Clang
 ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
