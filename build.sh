@@ -33,7 +33,7 @@ GCCbPath="${MainGCCbPath}"
 
 # Identity
 VERSION=12x13
-KERNELNAME=perf
+KERNELNAME=default
 CODENAME=kernel
 VARIANT=hmp
 
