@@ -32,16 +32,16 @@ GCCaPath="${MainGCCaPath}"
 GCCbPath="${MainGCCbPath}"
 
 # Identity
-VERSION=4.4.302
+VERSION=4.4.205
 KERNELNAME=TheOneMemory
 CODENAME=Hayzel
-VARIANT=EAS
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/android_kernel_asus_sdm660 -b eas kernel
+git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/msm-4.4 kernel
 
 # Clone Snapdragon Clang
 ClangPath=${MainClangPath}
@@ -53,15 +53,13 @@ git clone --depth=1 https://github.com/RyuujiX/SDClang -b 14 $ClangPath
 
 # Clone GCC
 mkdir $GCCaPath
-
+rm -rf $GCCaPath/*
 mkdir $GCCbPath
+rm -rf $GCCbPath/*
 
 msg "|| Cloning GCC toolchain ||"
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
-tar -xf gcc64.tar.gz -C $GCCaPath
-wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
-tar -xf gcc32.tar.gz -C $GCCbPath
-
+git clone --depth=1 https://github.com/RyuujiX/aarch64-linux-android-4.9 $GCCaPath
+git clone --depth=1 https://github.com/RyuujiX/arm-linux-androideabi-4.9 $GCCbPath
 
 # Prepared
 KERNEL_ROOTDIR=$(pwd)/kernel # IMPORTANT ! Fill with your kernel source root directory.
@@ -126,7 +124,7 @@ function push() {
         -<code>$DATE</code>
 
         <b>🐧 Linux Version: </b>
-        -<code>4.4.205</code>
+        -<code>$VERSION</code>
 
          <b>💿 Compiler: </b>
         -<code>$KBUILD_COMPILER_STRING</code>
@@ -137,7 +135,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #TheOneMemory #$CODENAME #$VARIANT"
+        #$KERNELNAME #$CODENAME #$VARIANT"
 }
 # Find Error
 function finerr() {
