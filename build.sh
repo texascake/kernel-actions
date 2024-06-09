@@ -32,16 +32,16 @@ GCCaPath="${MainGCCaPath}"
 GCCbPath="${MainGCCbPath}"
 
 # Identity
-VERSION=4.4.205
-KERNELNAME=TheOneMemory
-CODENAME=Hayzel
-VARIANT=HMP
+VERSION=4.4.302
+KERNELNAME=darkonah
+CODENAME=rebase
+VARIANT=EAS
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://$USERNAME:$TOKEN@github.com/strongreasons/msm-4.4 kernel
+git clone --depth=1 https://github.com/strongreasons/android_kernel_asus_sdm660 -b dark kernel
 
 # Clone Snapdragon Clang
 ClangPath=${MainClangPath}
