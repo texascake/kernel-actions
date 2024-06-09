@@ -69,7 +69,7 @@ CLANG_VER="Snapdragon clang version 14.1.5"
 #LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
 export KBUILD_COMPILER_STRING="$CLANG_VER X GCC 4.9"
 ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$ClangPath/lib LD=ld.lld HOSTLD=ld.lld"
-DATE=$(date +"%Y-%m-%d")
+DATE=$(date +"%Y%m%d")
 START=$(date +"%s")
 
 # Java
@@ -148,7 +148,7 @@ function finerr() {
 }
 # Zipping
 function zipping() {
-    cd AnyKernel || exit 1
+cd AnyKernel || exit 1
 #cp -af $KERNEL_DIR/init.$CODENAME.Spectrum.rc spectrum/init.spectrum.rc && sed -i "s/persist.spectrum.kernel.*/persist.spectrum.kernel TheOneMemory/g" spectrum/init.spectrum.rc
 #cp -af $KERNEL_DIR/changelog META-INF/com/google/android/aroma/changelog.txt
 cp -af anykernel-real.sh anykernel.sh
@@ -160,7 +160,7 @@ sed -i "s/kernel.made=.*/kernel.made=dotkit @fakedotkit/g" anykernel.sh
 sed -i "s/kernel.version=.*/kernel.version=$VERSION/g" anykernel.sh
 sed -i "s/message.word=.*/message.word=Appreciate your efforts for choosing TheOneMemory kernel./g" anykernel.sh
 sed -i "s/build.date=.*/build.date=$DATE/g" anykernel.sh
-sed -i "s/build.type=.*/build.type=$BASE/g" anykernel.sh
+sed -i "s/build.type=.*/build.type=$CODENAME/g" anykernel.sh
 sed -i "s/supported.versions=.*/supported.versions=9-13/g" anykernel.sh
 sed -i "s/device.name1=.*/device.name1=X00TD/g" anykernel.sh
 sed -i "s/device.name2=.*/device.name2=X00T/g" anykernel.sh
