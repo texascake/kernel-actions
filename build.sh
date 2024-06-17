@@ -34,14 +34,14 @@ GCCbPath="${MainGCCbPath}"
 # Identity
 VERSION=4.4.302
 KERNELNAME=TheOneMemory
-CODENAME=EOL
-VARIANT=EAS
+CODENAME=Onyx
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b pie-u kernel
+git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b hmp kernel
 
 # Clone Snapdragon Clang
 ClangPath=${MainClangPath}
@@ -91,7 +91,7 @@ cd ${KERNEL_ROOTDIR}
 msg "|| Cooking kernel. . . ||"
 export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
-make -j$(nproc) O=out ARCH=arm64 darkonah_defconfig
+make -j$(nproc) O=out ARCH=arm64 X00TD_defconfig
 make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
     PATH=$ClangPath/bin:$GCCaPath/bin:$GCCbPath/bin:/usr/bin:${PATH} \
     CC=clang \
@@ -107,7 +107,7 @@ make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
    fi
 
    msg "|| Cloning AnyKernel ||"
-   git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b eas AnyKernel
+   git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b hmp-old AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
