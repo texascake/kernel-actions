@@ -33,15 +33,15 @@ GCCbPath="${MainGCCbPath}"
 
 # Identity
 VERSION=4.4.302
-KERNELNAME=TheOneMemory
-CODENAME=Onyx
-VARIANT=HMP
+KERNELNAME=SkyWalker
+CODENAME=Hayzel
+VARIANT=EAS
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b hmp kernel
+git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b test kernel
 
 # Clone Snapdragon Clang
 ClangPath=${MainClangPath}
@@ -107,7 +107,7 @@ make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
    fi
 
    msg "|| Cloning AnyKernel ||"
-   git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b hmp-old AnyKernel
+   git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b eas AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
@@ -135,7 +135,7 @@ function push() {
         <b>🆑 Changelog: </b>
         - <code>$COMMIT_HEAD</code>
         <b></b>
-        #$KERNELNAME #$CODENAME #$VARIANT"
+        #$KERNELNAME #$VARIANT"
 }
 # Find Error
 function finerr() {
@@ -177,15 +177,15 @@ sed -i "s/KBDATE/$DATE/g" aroma-config
 sed -i "s/KVARIANT/$VARIANT/g" aroma-config
 cd ../../../..
 
-    zip -r9 $KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "./*placeholder" "*.zip"
+    zip -r9 $KERNELNAME-Solifice-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "./*placeholder" "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-$CODENAME-$VARIANT-$DATE"
+    ZIP_FINAL="$KERNELNAME-Solifice-$VARIANT-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
 
-    curl -sLo zipsigner-3.0-dexed.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
-    java -jar zipsigner-3.0-dexed.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
+    curl -sLo zipsigner-3.0.jar https://github.com/Magisk-Modules-Repo/zipsigner/raw/master/bin/zipsigner-3.0-dexed.jar
+    java -jar zipsigner-3.0.jar "$ZIP_FINAL".zip "$ZIP_FINAL"-signed.zip
     ZIP_FINAL="$ZIP_FINAL-signed"
     cd ..
 }
