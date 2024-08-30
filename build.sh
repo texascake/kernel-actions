@@ -32,16 +32,16 @@ GCCaPath="${MainGCCaPath}"
 GCCbPath="${MainGCCbPath}"
 
 # Identity
-VERSION=4.4.302
-KERNELNAME=SkyWalker
+VERSION=4.4.205
+KERNELNAME=TOM
 CODENAME=Hayzel
-VARIANT=EAS
+VARIANT=HMP
 
 # Show manufacturer info
 MANUFACTURERINFO="ASUSTek Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 --recursive https://github.com/strongreasons/android_kernel_asus_sdm660 -b test kernel
+git clone --depth=1 --recursive https://github.com/texascake/kernel_asus_sdm660 kernel
 
 # Clone Snapdragon Clang
 ClangPath=${MainClangPath}
@@ -107,7 +107,7 @@ make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
    fi
 
    msg "|| Cloning AnyKernel ||"
-   git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b eas AnyKernel
+   git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b hmp-old AnyKernel
 	cp $IMAGE AnyKernel
 }
 # Push kernel to telegram
