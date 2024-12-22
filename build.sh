@@ -32,18 +32,18 @@ GCCaPath="${MainGCCaPath}"
 GCCbPath="${MainGCCbPath}"
 
 # Identity
-VERSION=4.9.337
+VERSION=4.4.312
 KERNELNAME=TheOneMemory
-CODENAME=RMX1971
-VARIANT=Stable
+CODENAME=X00TD
+VARIANT=HMP
 
 LINKER=ld.lld
 
 # Show manufacturer info
-MANUFACTURERINFO="Realme Computer Inc."
+MANUFACTURERINFO="Asus Computer Inc."
 
 # Clone Kernel Source
-git clone --depth=1 https://github.com/texascake/android_kernel_asus_sdm660 -b 14 kernel
+git clone --depth=1 https://github.com/texascake/android_kernel_asus_sdm660-4.4 kernel
 
 # Clone Toolchain
 ClangPath=${MainClangPath}
@@ -88,6 +88,7 @@ tg_post_msg() {
     -d "parse_mode=html" \
     -d text="$1"
 }
+
 # Compiler
 compile(){
 cd ${KERNEL_ROOTDIR}
@@ -116,6 +117,7 @@ make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
    git clone --depth=1 https://github.com/Tiktodz/AnyKernel3 -b 44 AnyKernel
 	cp $IMAGE AnyKernel
 }
+
 # Push kernel to telegram
 function push() {
     cd AnyKernel
