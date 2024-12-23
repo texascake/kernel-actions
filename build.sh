@@ -35,7 +35,7 @@ GCCbPath="${MainGCCbPath}"
 VERSION=4.4.312
 KERNELNAME=TheOneMemory
 CODENAME=X00TD
-VARIANT=HMP
+VARIANT=AEXHMP
 
 LINKER=ld.lld
 
@@ -50,28 +50,28 @@ ClangPath=${MainClangPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
-msg "|| Cloning sdclang toolchain ||"
-git clone --depth=1 https://github.com/kdrag0n/proton-clang $ClangPath
+wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r522817.tar.gz -O "clang-r522817.tar.gz"
+tar -xf clang-r522817.tar.gz -C $ClangPath
 
 # Clone GCC
-#mkdir $GCCaPath
-#rm -rf $GCCaPath/*
-#mkdir $GCCbPath
-#rm -rf $GCCbPath/*
-
-#msg "|| Cloning GCC toolchain ||"
-#git clone --depth=1 https://github.com/RyuujiX/aarch64-linux-android-4.9 $GCCaPath
-#git clone --depth=1 https://github.com/RyuujiX/arm-linux-androideabi-4.9 $GCCbPath
+mkdir $GCCaPath
+mkdir $GCCbPath
+wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
+tar -xf gcc64.tar.gz -C $GCCaPath
+wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/arm/arm-linux-androideabi-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc32.tar.gz"
+tar -xf gcc32.tar.gz -C $GCCbPath
 
 # Prepared
 KERNEL_ROOTDIR=$(pwd)/kernel # IMPORTANT ! Fill with your kernel source root directory.
+export TZ=Asia/Jakarta # Change with your local timezone.
+export LD=ld.lld
 export KBUILD_BUILD_USER=queen # Change with your own name or else.
 IMAGE=$(pwd)/kernel/out/arch/arm64/boot/Image.gz-dtb
-#CLANG_VER="Snapdragon clang version 14.1.5"
+CLANG_VER="$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')"
 #LLD_VER="$("$ClangPath"/bin/ld.lld --version | head -n 1)"
-export KBUILD_COMPILER_STRING=$("$ClangPath"/bin/clang --version | head -n 1 | perl -pe 's/\(http.*?\)//gs' | sed -e 's/  */ /g' -e 's/[[:space:]]*$//')
+export KBUILD_COMPILER_STRING="$CLANG_VER"
 #ClangMoreStrings="AR=llvm-ar NM=llvm-nm AS=llvm-as STRIP=llvm-strip OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf HOSTAR=llvm-ar HOSTAS=llvm-as LD_LIBRARY_PATH=$ClangPath/lib LD=ld.lld HOSTLD=ld.lld"
-export PATH=$ClangPath/bin:${PATH}
+export PATH=${ClangPath}/bin:${GCCaPath}/bin:${GCCbPath}/bin:${PATH}
 DATE=$(date +"%Y%m%d-%H%M")
 START=$(date +"%s")
 
@@ -97,16 +97,22 @@ export HASH_HEAD=$(git rev-parse --short HEAD)
 export COMMIT_HEAD=$(git log --oneline -1)
 make -j$(nproc) O=out ARCH=arm64 X00TD_defconfig
 make -j$(nproc) ARCH=arm64 SUBARCH=arm64 O=out \
-    PATH=$ClangPath/bin:${PATH} \
-    CROSS_COMPILE=aarch64-linux-gnu- \
-    CROSS_COMPILE_ARM32=arm-linux-gnueabi- \
-    CC=clang \
-    AR=llvm-ar \
-    OBJDUMP=llvm-objdump \
-    STRIP=llvm-strip \
-    NM=llvm-nm \
-    OBJCOPY=llvm-objcopy \
-    LD="$LINKER"
+    LD_LIBRARY_PATH="${ClangPath}/lib64:${LD_LIBRARY_PATH}" \
+    CC=${ClangPath}/bin/clang \
+    NM=${ClangPath}/bin/llvm-nm \
+    CXX=${ClangPath}/bin/clang++ \
+    AR=${ClangPath}/bin/llvm-ar \
+    STRIP=${ClangPath}/bin/llvm-strip \
+    OBJCOPY=${ClangPath}/bin/llvm-objcopy \
+    OBJDUMP=${ClangPath}/bin/llvm-objdump \
+    OBJSIZE=${ClangPath}/bin/llvm-size \
+    READELF=${ClangPath}/bin/llvm-readelf \
+    CROSS_COMPILE=aarch64-linux-android- \
+    CROSS_COMPILE_ARM32=arm-linux-androideabi- \
+    CLANG_TRIPLE=aarch64-linux-gnu- \
+    HOSTAR=${ClangPath}/bin/llvm-ar \
+    HOSTCC=${ClangPath}/bin/clang \
+    HOSTCXX=${ClangPath}/bin/clang++
 
    if ! [ -a "$IMAGE" ]; then
 	finerr
@@ -157,9 +163,9 @@ function finerr() {
 # Zipping
 function zipping() {
     cd AnyKernel
-    zip -r9 $KERNELNAME-$CODENAME-"$DATE" . -x ".git*" -x "README.md" -x "./*placeholder" "*.zip"
+    zip -r9 $KERNELNAME-$CODENAME-$VARIANT-"$DATE" . -x ".git*" -x "README.md" -x "./*placeholder" "*.zip"
 
-    ZIP_FINAL="$KERNELNAME-$CODENAME-$DATE"
+    ZIP_FINAL="$KERNELNAME-$CODENAME-$VARIANT-$DATE"
 
     msg "|| Signing Zip ||"
     tg_post_msg "<code>🔑 Signing Zip file with AOSP keys..</code>"
