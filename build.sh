@@ -25,11 +25,12 @@ cdir() {
 # Main
 MainPath="$(pwd)"
 MainClangPath="${MainPath}/clang"
-ClangPath="${MainClangPath}"
-MainGCCaPath="${MainPath}/GCC64"
-MainGCCbPath="${MainPath}/GCC32"
-GCCaPath="${MainGCCaPath}"
-GCCbPath="${MainGCCbPath}"
+MainClangZipPath="${MainPath}/clang-zip"
+ClangPath="${MainClangZipPath}"
+GCCaPath="${MainPath}/GCC64"
+GCCbPath="${MainPath}/GCC32"
+MainZipGCCaPath="${MainPath}/GCC64-zip"
+MainZipGCCbPath="${MainPath}/GCC32-zip"
 
 # Identity
 VERSION=4.4.312
@@ -45,15 +46,17 @@ MANUFACTURERINFO="Asus Computer Inc."
 # Clone Kernel Source
 git clone --depth=1 https://github.com/texascake/android_kernel_asus_sdm660-4.4 kernel
 
-# Clone Toolchain
-ClangPath=${MainClangPath}
+# Clone clang Toolchain
+msg "|| Cloning clang. . . ||"
+ClangPath=${MainClangZipPath}
 [[ "$(pwd)" != "${MainPath}" ]] && cd "${MainPath}"
 mkdir $ClangPath
 rm -rf $ClangPath/*
 wget -q https://android.googlesource.com/platform/prebuilts/clang/host/linux-x86/+archive/refs/heads/master/clang-r522817.tar.gz -O "clang-r522817.tar.gz"
 tar -xf clang-r522817.tar.gz -C $ClangPath
 
-# Clone GCC
+# Clone GCC Toolchain
+msg "|| Cloning GCC. . . ||"
 mkdir $GCCaPath
 mkdir $GCCbPath
 wget -q https://android.googlesource.com/platform/prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/+archive/refs/tags/android-12.1.0_r27.tar.gz -O "gcc64.tar.gz"
@@ -80,6 +83,7 @@ command -v java > /dev/null 2>&1
 
 # Telegram
 export BOT_MSG_URL="https://api.telegram.org/bot$TG_TOKEN/sendMessage"
+export BOT_BUILD_URL="https://api.telegram.org/bot$TG_TOKEN/sendDocument"
 
 # Telegram messaging
 tg_post_msg() {
